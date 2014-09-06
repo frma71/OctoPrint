@@ -10,6 +10,7 @@ import glob
 import time
 import re
 import threading
+import socket
 import Queue as queue
 import logging
 import serial
@@ -30,6 +31,29 @@ try:
 	import _winreg
 except:
 	pass
+
+
+class TcpSerial:
+	def __init__(self,host,port,timeout):
+		self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self._sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+		self._sock.settimeout(timeout)
+		self._sock.connect((host, port))
+		self.buffer = '';
+	def readline(self):
+		while True:
+			if '\n' in self.buffer:
+				(line, self.buffer) = self.buffer.split("\n", 1)
+				return line + '\n'
+			try:
+				data = self._sock.recv(4096)
+			except:
+				return self.buffer
+			self.buffer = self.buffer + data
+	def write(self,str):
+		self._sock.send(str)
+	def close(self):
+		self._sock.close()
 
 def serialList():
 	baselist=[]
@@ -61,6 +85,7 @@ def serialList():
 		baselist.insert(0, prev)
 	if settings().getBoolean(["devel", "virtualPrinter", "enabled"]):
 		baselist.append("VIRTUAL")
+	baselist.append("TCP")
 	return baselist
 
 def baudrateList():
@@ -956,6 +981,21 @@ class MachineCom(object):
 		elif self._port == 'VIRTUAL':
 			self._changeState(self.STATE_OPEN_SERIAL)
 			self._serial = VirtualPrinter()
+		elif self._port == 'TCP':
+                        self._changeState(self.STATE_OPEN_SERIAL)
+			try:
+				host = settings().get(["serial","tcp", "host"])
+				port = settings().getInt(["serial","tcp","port"])
+                                tmo  = settings().getFloat(["serial", "timeout", "connection"])
+				self._log("Connecting to: %s:%d" % (host, port))
+				self._serial = TcpSerial(host, port, tmo)
+				self._baudrate = 250000
+			except:
+				self._log("Unexpected error while connecting to serial port: %s %s" % (self._port, getExceptionString()))
+				self._errorValue = "Failed to connect to TCP server"
+				self._changeState(self.STATE_ERROR);
+				eventManager().fire(Events.ERROR, {"error": self.getErrorString()})
+				return False
 		else:
 			self._changeState(self.STATE_OPEN_SERIAL)
 			try:

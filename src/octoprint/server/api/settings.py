@@ -73,6 +73,8 @@ def getSettings():
 			"port": connectionOptions["portPreference"],
 			"baudrate": connectionOptions["baudratePreference"],
 			"portOptions": connectionOptions["ports"],
+			"tcpHost": s.get(["serial" ,"tcp", "host"]),
+			"tcpPort": s.getInt(["serial" ,"tcp", "port"]),
 			"baudrateOptions": connectionOptions["baudrates"],
 			"autoconnect": s.getBoolean(["serial", "autoconnect"]),
 			"timeoutConnection": s.getFloat(["serial", "timeout", "connection"]),
@@ -156,6 +158,8 @@ def setSettings():
 			if "autoconnect" in data["serial"].keys(): s.setBoolean(["serial", "autoconnect"], data["serial"]["autoconnect"])
 			if "port" in data["serial"].keys(): s.set(["serial", "port"], data["serial"]["port"])
 			if "baudrate" in data["serial"].keys(): s.setInt(["serial", "baudrate"], data["serial"]["baudrate"])
+			if "tcpHost" in data["serial"].keys(): s.set(["serial", "tcp", "host"], data["serial"]["tcpHost"])
+			if "tcpPort" in data["serial"].keys(): s.setInt(["serial", "tcp", "port"], data["serial"]["tcpPort"])
 			if "timeoutConnection" in data["serial"].keys(): s.setFloat(["serial", "timeout", "connection"], data["serial"]["timeoutConnection"])
 			if "timeoutDetection" in data["serial"].keys(): s.setFloat(["serial", "timeout", "detection"], data["serial"]["timeoutDetection"])
 			if "timeoutCommunication" in data["serial"].keys(): s.setFloat(["serial", "timeout", "communication"], data["serial"]["timeoutCommunication"])

@@ -35,7 +35,11 @@ default_settings = {
 			"temperature": 5,
 			"sdStatus": 1
 		},
-		"additionalPorts": []
+		"additionalPorts": [],
+		"tcp": {
+			"host" : "127.0.0.1",
+			"port" : 5001
+		}
 	},
 	"server": {
 		"host": "0.0.0.0",

@@ -142,6 +142,8 @@ function SettingsViewModel(loginStateViewModel, usersViewModel) {
     self.serial_baudrate = ko.observable();
     self.serial_portOptions = ko.observableArray([]);
     self.serial_baudrateOptions = ko.observableArray([]);
+    self.serial_tcpHost = ko.observable();
+    self.serial_tcpPort = ko.observable();
     self.serial_autoconnect = ko.observable(undefined);
     self.serial_timeoutConnection = ko.observable(undefined);
     self.serial_timeoutDetection = ko.observable(undefined);
@@ -257,6 +259,8 @@ function SettingsViewModel(loginStateViewModel, usersViewModel) {
         self.serial_port(response.serial.port);
         self.serial_baudrate(response.serial.baudrate);
         self.serial_portOptions(response.serial.portOptions);
+        self.serial_tcpHost(response.serial.tcpHost);
+        self.serial_tcpPort(response.serial.tcpPort);
         self.serial_baudrateOptions(response.serial.baudrateOptions);
         self.serial_autoconnect(response.serial.autoconnect);
         self.serial_timeoutConnection(response.serial.timeoutConnection);
@@ -327,6 +331,8 @@ function SettingsViewModel(loginStateViewModel, usersViewModel) {
             "serial": {
                 "port": self.serial_port(),
                 "baudrate": self.serial_baudrate(),
+		"tcpHost": self.serial_tcpHost(),
+		"tcpPort": self.serial_tcpPort(),
                 "autoconnect": self.serial_autoconnect(),
                 "timeoutConnection": self.serial_timeoutConnection(),
                 "timeoutDetection": self.serial_timeoutDetection(),
