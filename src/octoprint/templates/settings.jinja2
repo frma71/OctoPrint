@@ -39,6 +39,18 @@
                             </div>
                         </div>
                         <div class="control-group">
+                            <label class="control-label" for="settings-tcpHost">TCP Host</label>
+                            <div class="controls">
+                                <input type="text" class="input-large text-left" data-bind="value: serial_tcpHost" id="settings-tcpHost">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="settings-tcpPort">TCP Port</label>
+                            <div class="controls">
+                                <input type="number" class="input-mini text-left" data-bind="value: serial_tcpPort" id="settings-tcpPort">
+                            </div>
+                        </div>
+                        <div class="control-group">
                             <div class="controls">
                                 <label class="checkbox">
                                     <input type="checkbox" data-bind="checked: serial_autoconnect" id="settings-serialAutoconnect"> Auto-connect to printer on server start
