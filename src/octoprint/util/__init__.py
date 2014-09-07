@@ -106,8 +106,12 @@ def getFreeBytes(path):
 		ctypes.windll.kernel32.GetDiskFreeSpaceExW(ctypes.c_wchar_p(path), None, None, ctypes.pointer(freeBytes))
 		return freeBytes.value
 	else:
-		st = os.statvfs(path)
-		return st.f_bavail * st.f_frsize
+#
+# No statvfs on android
+#
+#		st = os.statvfs(path)
+#		return st.f_bavail * st.f_frsize
+		return 100*1000*1000
 
 
 def getRemoteAddress(request):
